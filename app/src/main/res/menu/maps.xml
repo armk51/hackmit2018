@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/maps_home"
+        android:icon="@drawable/ic_action_name"
+        android:title="Home"
+        tools:layout="@layout/map_fragment"/>
+
+</menu>
