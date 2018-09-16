@@ -1,3 +1,5 @@
+package com.example.test;
+
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -10,7 +12,7 @@ import java.net.URL;
 import org.json.*;
 
 @Entity
-public class Contact {
+public class Contact implements Comparable {
     @PrimaryKey(autoGenerate = true)
     private int id=0;
 
@@ -22,6 +24,11 @@ public class Contact {
     private String address;
     private double x;
     private double y;
+
+    @Ignore
+    private int timeToUser;
+    @Ignore
+    private int distToUser;
 
     public Contact(String name, String phn, String address) {
         this.name = name;
@@ -37,6 +44,25 @@ public class Contact {
             this.x = 0;
             this.y = 0;
         }
+    }
+
+    public Contact(String name, String phn, String address, int timeToUser, int distToUser) {
+        this.name = name;
+        this.phn = phn;
+        this.address = address;
+
+        try {
+            double[] coords = get_coords(address);
+            this.x = coords[0];
+            this.y = coords[1];
+        }
+        catch (Exception e){
+            this.x = 0;
+            this.y = 0;
+        }
+
+        this.timeToUser = timeToUser;
+        this.distToUser = distToUser;
     }
 
     private double[] get_coords(String address) throws IOException, JSONException {
@@ -62,10 +88,19 @@ public class Contact {
 
         // get the first result
         JSONObject res = json.getJSONArray("results").getJSONObject(0);
-        System.out.println(res.getString("formatted_address"));
-        JSONObject loc =
-                res.getJSONObject("geometry").getJSONObject("location");
+        JSONObject loc = res.getJSONObject("geometry").getJSONObject("location");
         return new double[] {loc.getDouble("lat"), loc.getDouble("lng")};
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((Contact) obj).getTimeToUser() == (this.getTimeToUser());
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Contact c = (Contact) o;
+        return (int) (this.getTimeToUser() - c.getTimeToUser());
     }
 
     public int getId() {
@@ -114,5 +149,21 @@ public class Contact {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public double getTimeToUser() {
+        return timeToUser;
+    }
+
+    public void setTimeToUser(int timeToUser) {
+        this.timeToUser = timeToUser;
+    }
+
+    public int getDistToUser() {
+        return distToUser;
+    }
+
+    public void setDistToUser(int distToUser) {
+        this.distToUser = distToUser;
     }
 }
