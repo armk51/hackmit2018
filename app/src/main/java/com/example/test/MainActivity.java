@@ -1,5 +1,7 @@
 package com.example.test;
 
+import android.arch.persistence.room.Room;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +17,40 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
+    static AppDatabase db;
+
+    public MainActivity() {
+
+    }
+
+    public AppDatabase getDb() {
+        return this.db;
+    }
+
+    private static class LoadContactsTask extends AsyncTask<Void, Void, List<Contact>> {
+        @Override
+        protected List<Contact> doInBackground(Void... params) {
+            ContactDao contactDao = db.contactDao();
+            return contactDao.getAll();
+        }
+
+        @Override
+        protected void onPostExecute(List<Contact> contacts) {
+        }
+    }
+
+    private static class SaveContactTask extends AsyncTask<Contact, Void, Contact> {
+        @Override
+        protected Contact doInBackground(Contact... params) {
+            Contact contact = params[0];
+            ContactDao contactDao = db.contactDao();
+            if (contactDao.getByEverything(contact.getName(), contact.getPhn(), contact.getAddress()).size() == 0) {
+                contactDao.insertAll(contact);
+            }
+            contactDao.updateContacts(contact);
+            return params[0];
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             System.out.println(e);
         }
+
+        this.db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "app-database").build();
+
+        new SaveContactTask().execute(c1);
+        new SaveContactTask().execute(c2);
+
+        System.out.println(new LoadContactsTask().execute());
 
 
         bottomNavigation = findViewById(R.id.navigationView);

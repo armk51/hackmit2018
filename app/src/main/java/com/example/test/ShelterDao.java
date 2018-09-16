@@ -12,6 +12,12 @@ public interface ShelterDao {
     @Query("SELECT * FROM shelter")
     List<Shelter> getAll();
 
+    @Update
+    public void updateShelters(Shelter... shelters);
+
+    @Query("SELECT * FROM contact WHERE name LIKE :name AND phn LIKE :phn AND address LIKE :address")
+    List<Contact> getByEverything(String name, String phn, String address);
+
     @Query("SELECT * FROM shelter WHERE name LIKE :name")
     List<Shelter> getByName(String name);
 

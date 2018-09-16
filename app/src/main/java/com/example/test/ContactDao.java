@@ -12,6 +12,12 @@ public interface ContactDao {
     @Query("SELECT * FROM contact")
     List<Contact> getAll();
 
+    @Update
+    public void updateContacts(Contact... contacts);
+
+    @Query("SELECT * FROM contact WHERE name LIKE :name AND phn LIKE :phn AND address LIKE :address")
+    List<Contact> getByEverything(String name, String phn, String address);
+
     @Query("SELECT * FROM contact WHERE address LIKE :address")
     List<Contact> getByAddress(String address);
 
