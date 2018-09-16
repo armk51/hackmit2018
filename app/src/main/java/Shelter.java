@@ -1,8 +1,9 @@
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
-public class Shelter {
+public class Shelter implements Comparable {
     @PrimaryKey(autoGenerate = true)
     private int id=0;
 
@@ -10,10 +11,26 @@ public class Shelter {
     private double x;
     private double y;
 
+    @Ignore
+    private int timeToUser;
+    @Ignore
+    private int distToUser;
+
     public Shelter(String name, double x, double y) {
         this.name = name;
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((Shelter) obj).getTimeToUser() == (this.getTimeToUser());
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Shelter s = (Shelter) o;
+        return (int) (this.getTimeToUser() - s.getTimeToUser());
     }
 
     public int getId() {
@@ -46,5 +63,21 @@ public class Shelter {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public int getTimeToUser() {
+        return timeToUser;
+    }
+
+    public void setTimeToUser(int timeToUser) {
+        this.timeToUser = timeToUser;
+    }
+
+    public int getDistToUser() {
+        return distToUser;
+    }
+
+    public void setDistToUser(int distToUser) {
+        this.distToUser = distToUser;
     }
 }
