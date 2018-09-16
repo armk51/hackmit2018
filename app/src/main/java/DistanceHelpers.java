@@ -120,14 +120,15 @@ public class DistanceHelpers {
         int i = 0;
         List<Contact> results = new ArrayList<Contact>();
         while (contacts.size() > i && results.size() < num) {
+            Contact contact = contacts.get(i);
             // Check if in disaster area.
-            URL url = new URL("https://api.weather.com/v3/alerts/headlines");
+            URL url = new URL("https://api.weather.com/v3/alerts/headlines?geocode="+contact.getX()+"%2C"+contact.getY()+"&format=json&language=en-US&apiKey="+APIKey);
             HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
             con.setRequestMethod("GET");
-            // TODO-ADD PARAMETER CHECKS
+            con.setRequestProperty("Accept-Encoding", "gzip");
 
             if (con.getResponseCode() == 204) {
-                results.add(contacts.get(i));
+                results.add(contact);
                 i++;
                 continue;
             }
@@ -157,7 +158,7 @@ public class DistanceHelpers {
                 }
             }
             if (add) {
-                results.add(contacts.get(i));
+                results.add(contact);
             }
             i++;
         }
