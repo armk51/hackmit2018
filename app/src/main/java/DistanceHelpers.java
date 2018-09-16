@@ -165,4 +165,57 @@ public class DistanceHelpers {
 
         return results;
     }
+
+    static List<Shelter> getNClosestShelters(List<Shelter> shelters, int num) throws IOException, JSONException {
+        String APIKey = "da328055e2e940d8b28055e2e9e0d851";
+
+        Collections.sort(shelters);
+        int i = 0;
+        List<Shelter> results = new ArrayList<Shelter>();
+        while (shelters.size() > i && results.size() < num) {
+            Shelter shelter = shelters.get(i);
+            // Check if in disaster area.
+            URL url = new URL("https://api.weather.com/v3/alerts/headlines?geocode="+shelter.getX()+"%2C"+shelter.getY()+"&format=json&language=en-US&apiKey="+APIKey);
+            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Accept-Encoding", "gzip");
+
+            if (con.getResponseCode() == 204) {
+                results.add(shelter);
+                i++;
+                continue;
+            }
+
+            // read from the URL
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    con.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // build a JSON object
+            JSONObject json = new JSONObject(response.toString());
+
+            // get the first result
+            boolean add = true;
+            JSONArray alerts = json.getJSONArray("alerts");
+            for (int j=0; j<alerts.length();j++) {
+                int severity = alerts.getJSONObject(j).getInt("severityCode");
+                if (severity < 3) {
+                    add = false;
+                    break;
+                }
+            }
+            if (add) {
+                results.add(shelter);
+            }
+            i++;
+        }
+
+        return results;
+    }
 }
