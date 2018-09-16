@@ -5,5 +5,7 @@
     <string name="weather_alerts">Weather Alerts</string>
     <string name="safe_location">Nearest Safe Location</string>
     <string name="shelters">Shelters</string>
-    <string name="app_name">Weather Alert</string>
+    <string name="app_name">EmergenSee</string>
+    <string name="my_alerts">My Alerts</string>
+    <string name="contact_alerts">Contact Alerts</string>
 </resources>
