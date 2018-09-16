@@ -1,5 +1,6 @@
 package com.example.test;
 
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -8,14 +9,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Contact c1 = new Contact("John Doe", "230-345-3456", "5912 Chatsworth Lane, Bethesda, MD");
+        Contact c2 = new Contact("Jane Doe", "808-546-3567", "Ashford, CT");
+
+        List<Contact> contacts = new ArrayList<>();
+        contacts.add(c1); contacts.add(c2);
+
+        try {
+            DistanceHelpers.updateDistContacts(42, -71, contacts);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
 
         bottomNavigation = findViewById(R.id.navigationView);

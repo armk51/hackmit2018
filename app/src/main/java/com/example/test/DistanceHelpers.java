@@ -23,12 +23,17 @@ public class DistanceHelpers {
         request.append(userX);
         request.append(",");
         request.append(userY);
-        request.append("&");
-        for (Contact contact : contacts) {
+        request.append("&destinations=");
+        for (int i=0;i<contacts.size()-1;i++) {
+            Contact contact = contacts.get(i);
             request.append(contact.getX());
             request.append(",");
             request.append(contact.getY());
+            request.append("|");
         }
+        request.append(contacts.get(contacts.size()-1).getX());
+        request.append(",");
+        request.append(contacts.get(contacts.size()-1).getY());
         request.append("&key=");
         request.append(APIKey);
 
@@ -70,12 +75,17 @@ public class DistanceHelpers {
         request.append(userX);
         request.append(",");
         request.append(userY);
-        request.append("&");
-        for (Shelter shelter : shelters) {
+        request.append("&destinations=");
+        for (int i=0;i<shelters.size()-1;i++) {
+            Shelter shelter = shelters.get(i);
             request.append(shelter.getX());
             request.append(",");
             request.append(shelter.getY());
+            request.append("|");
         }
+        request.append(shelters.get(shelters.size()-1).getX());
+        request.append(",");
+        request.append(shelters.get(shelters.size()-1).getY());
         request.append("&key=");
         request.append(APIKey);
 
