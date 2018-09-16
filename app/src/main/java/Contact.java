@@ -23,14 +23,20 @@ public class Contact {
     private double x;
     private double y;
 
-    public Contact(String name, String phn, String address) throws IOException, JSONException {
+    public Contact(String name, String phn, String address) {
         this.name = name;
         this.phn = phn;
         this.address = address;
 
-        double[] coords = get_coords(address);
-        this.x = coords[0];
-        this.y = coords[1];
+        try {
+            double[] coords = get_coords(address);
+            this.x = coords[0];
+            this.y = coords[1];
+        }
+        catch (Exception e){
+            this.x = 0;
+            this.y = 0;
+        }
     }
 
     private double[] get_coords(String address) throws IOException, JSONException {
@@ -60,6 +66,14 @@ public class Contact {
         JSONObject loc =
                 res.getJSONObject("geometry").getJSONObject("location");
         return new double[] {loc.getDouble("lat"), loc.getDouble("lng")};
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
