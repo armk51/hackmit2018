@@ -23,6 +23,11 @@ public class Contact {
     private double x;
     private double y;
 
+    @Ignore
+    private int timeToUser;
+    @Ignore
+    private int distToUser;
+
     public Contact(String name, String phn, String address) {
         this.name = name;
         this.phn = phn;
@@ -37,6 +42,25 @@ public class Contact {
             this.x = 0;
             this.y = 0;
         }
+    }
+
+    public Contact(String name, String phn, String address, int timeToUser, int distToUser) {
+        this.name = name;
+        this.phn = phn;
+        this.address = address;
+
+        try {
+            double[] coords = get_coords(address);
+            this.x = coords[0];
+            this.y = coords[1];
+        }
+        catch (Exception e){
+            this.x = 0;
+            this.y = 0;
+        }
+
+        this.timeToUser = timeToUser;
+        this.distToUser = distToUser;
     }
 
     private double[] get_coords(String address) throws IOException, JSONException {
@@ -114,5 +138,21 @@ public class Contact {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public double getTimeToUser() {
+        return timeToUser;
+    }
+
+    public void setTimeToUser(int timeToUser) {
+        this.timeToUser = timeToUser;
+    }
+
+    public int getDistToUser() {
+        return distToUser;
+    }
+
+    public void setDistToUser(int distToUser) {
+        this.distToUser = distToUser;
     }
 }
