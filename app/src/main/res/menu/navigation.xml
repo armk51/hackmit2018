@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_action_name"
-        android:title="Home"/>
+        android:title="Home"
+        tools:layout="@layout/home_fragment"/>
 
     <item
         android:id="@+id/navigation_alerts"
         android:icon="@drawable/ic_action_name"
-        android:title="Alerts"/>
+        android:title="Alerts"
+        tools:layout="@layout/alerts_fragment"/>
 
     <item
         android:id="@+id/navigation_contacts"
         android:icon="@drawable/ic_action_name"
-        android:title="Contacts"/>
+        android:title="Contacts"
+        tools:layout="@layout/contacts_fragment"/>
 
 </menu>
