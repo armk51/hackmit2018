@@ -1,3 +1,7 @@
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -5,8 +9,14 @@ import javax.net.ssl.HttpsURLConnection;
 import java.net.URL;
 import org.json.*;
 
+@Entity
 public class Contact {
-    private String APIKey = "AIzaSyB6Wq1m5PB27emo2reEUzRuY4B0kdT-jFU";
+    @PrimaryKey(autoGenerate = true)
+    private int id=0;
+
+    @Ignore
+    private String APIKey = "AIzaSyB6Wq1m5PB27emo2reEUzRuY4B0kdT-jFU"; //value does not change
+
     private String name;
     private String phn;
     private String address;
