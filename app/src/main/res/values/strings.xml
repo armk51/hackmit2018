@@ -1,7 +1,7 @@
 <resources>
-    <string name="home">home</string>
-    <string name="alerts">alerts</string>
-    <string name="contacts">contacts</string>
+    <string name="home">Home</string>
+    <string name="alerts">Alerts</string>
+    <string name="contacts">Contacts</string>
     <string name="weather_alerts">Weather Alerts</string>
     <string name="safe_location">Nearest Safe Location</string>
     <string name="shelters">Shelters</string>
