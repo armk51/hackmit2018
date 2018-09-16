@@ -86,9 +86,7 @@ public class Contact {
 
         // get the first result
         JSONObject res = json.getJSONArray("results").getJSONObject(0);
-        System.out.println(res.getString("formatted_address"));
-        JSONObject loc =
-                res.getJSONObject("geometry").getJSONObject("location");
+        JSONObject loc = res.getJSONObject("geometry").getJSONObject("location");
         return new double[] {loc.getDouble("lat"), loc.getDouble("lng")};
     }
 

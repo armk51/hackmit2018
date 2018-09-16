@@ -1,5 +1,7 @@
 import android.support.annotation.NonNull;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -15,7 +17,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class DistanceHelpers {
 
-    static List<Contact> getDistContacts(double userX, double userY, List<Contact> contacts) throws IOException {
+    static void updateDist(double userX, double userY, List<Contact> contacts) throws IOException, JSONException {
         String APIKey = "AIzaSyB6Wq1m5PB27emo2reEUzRuY4B0kdT-jFU";
 
         StringBuilder request = new StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=");
@@ -51,6 +53,14 @@ public class DistanceHelpers {
         if (! json.getString("status").equals("OK"))
             throw new IOException("Bad Address");
 
-        return new List<Contact>();
+        // get the first result
+        JSONObject res = json.getJSONArray("rows").getJSONObject(0);
+        JSONArray dists = res.getJSONArray("elements");
+        for (int i=0;i<contacts.size();i++) {
+            Contact contact = contacts.get(i);
+            JSONObject info = dists.getJSONObject(i);
+            contact.setTimeToUser(info.getJSONObject("duration").getInt("value"));
+            contact.setDistToUser(info.getJSONObject("distance").getInt("value"));
+        }
     }
 }
