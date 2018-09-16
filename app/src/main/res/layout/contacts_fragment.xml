@@ -10,11 +10,13 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:clickable="true"
         app:backgroundTint="@android:color/holo_green_light"
+        app:layout_constraintBottom_toTopOf="@+id/alert_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,9 +65,13 @@
         android:id="@+id/button2"
         android:layout_width="68dp"
         android:layout_height="34dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/holo_green_light"
+        android:onClick="openMap"
         android:text="Go"
         android:textColor="@android:color/background_light"
-        tools:layout_editor_absoluteX="289dp"
-        tools:layout_editor_absoluteY="79dp" />
+        app:layout_constraintEnd_toEndOf="@+id/alert_card"
+        app:layout_constraintTop_toTopOf="@+id/alert_card" />
 </android.support.constraint.ConstraintLayout>

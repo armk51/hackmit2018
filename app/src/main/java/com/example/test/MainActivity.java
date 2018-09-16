@@ -68,4 +68,10 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame_layout, HomeFragment.newInstance());
         transaction.commit();
     }
+
+    public void openMap(android.view.View view) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, MapFragment.newInstance());
+        transaction.commit();
+    }
 }
