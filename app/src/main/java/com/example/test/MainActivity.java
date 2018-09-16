@@ -35,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(e);
         }
 
+        try {
+            DistanceHelpers.getNClosestContacts(contacts, 1);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
 
         bottomNavigation = findViewById(R.id.navigationView);
 

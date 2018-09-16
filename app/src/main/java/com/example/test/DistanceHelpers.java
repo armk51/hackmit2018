@@ -132,7 +132,6 @@ public class DistanceHelpers {
             URL url = new URL("https://api.weather.com/v3/alerts/headlines?geocode="+contact.getX()+"%2C"+contact.getY()+"&format=json&language=en-US&apiKey="+APIKey);
             HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
             con.setRequestMethod("GET");
-            con.setRequestProperty("Accept-Encoding", "gzip");
 
             if (con.getResponseCode() == 204) {
                 results.add(contact);
@@ -185,7 +184,6 @@ public class DistanceHelpers {
             URL url = new URL("https://api.weather.com/v3/alerts/headlines?geocode="+shelter.getX()+"%2C"+shelter.getY()+"&format=json&language=en-US&apiKey="+APIKey);
             HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
             con.setRequestMethod("GET");
-            con.setRequestProperty("Accept-Encoding", "gzip");
 
             if (con.getResponseCode() == 204) {
                 results.add(shelter);
