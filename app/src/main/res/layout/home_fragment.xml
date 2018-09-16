@@ -40,7 +40,6 @@
             android:id="@+id/alert_card_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current Alert"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/white" />
 

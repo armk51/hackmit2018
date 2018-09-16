@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
     static AppDatabase db;
+    String alertDescription;
 
     public MainActivity() {
 
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class MyLocationListener implements LocationListener {
+    protected class MyLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location loc) {
@@ -146,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(e);
         }
 
-        String alertDescription = "";
         try {
             URL url = new URL("https://api.weather.com/v3/alerts/headlines?geocode=" + x + "%2C" + y + "&format=json&language=en-US&apiKey=da328055e2e940d8b28055e2e9e0d851");
             HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
@@ -174,11 +174,6 @@ public class MainActivity extends AppCompatActivity {
             alertDescription = e.toString();
         }
 
-        LayoutInflater factory = getLayoutInflater();
-        View v = factory.inflate(R.layout.home_fragment, null);
-        TextView alert_message = (TextView) v.findViewById(R.id.alert_card_message);
-        alert_message.setText(alertDescription);
-
         System.out.println(alertDescription);
 
         bottomNavigation = findViewById(R.id.navigationView);
@@ -189,7 +184,10 @@ public class MainActivity extends AppCompatActivity {
                 Fragment selectedFragment = null;
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
+                        Bundle bundle = new Bundle();
+                        bundle.putString("alert", alertDescription);
                         selectedFragment = HomeFragment.newInstance();
+                        selectedFragment.setArguments(bundle);
                         item.setChecked(true);
                         break;
                     case R.id.navigation_alerts:
@@ -209,8 +207,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Fragment fragment = HomeFragment.newInstance();
+        Bundle bundle = new Bundle();
+        bundle.putString("alert", alertDescription);
+        fragment.setArguments(bundle);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, HomeFragment.newInstance());
+        transaction.replace(R.id.frame_layout, fragment);
         transaction.commit();
     }
 
