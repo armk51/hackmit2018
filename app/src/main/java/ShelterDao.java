@@ -8,17 +8,17 @@ public interface ShelterDao {
     int count_shelters();
 
     @Query("SELECT * FROM shelter")
-    List<Contact> getAll();
+    List<Shelter> getAll();
 
     @Query("SELECT * FROM shelter WHERE name LIKE :name")
-    List<Contact> getByName(String name);
+    List<Shelter> getByName(String name);
 
     @Query("SELECT * FROM shelter WHERE x LIKE :x AND y LIKE :y")
-    List<Contact> getByCoords(Double x, Double y);
+    List<Shelter> getByCoords(Double x, Double y);
 
     @Insert
-    void insertAll(Contact... contact);
+    void insertAll(Shelter... shelter);
 
     @Delete
-    void delete(Contact contact);
+    void delete(Shelter shelter);
 }
