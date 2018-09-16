@@ -10,7 +10,7 @@ import java.net.URL;
 import org.json.*;
 
 @Entity
-public class Contact {
+public class Contact implements Comparable {
     @PrimaryKey(autoGenerate = true)
     private int id=0;
 
@@ -88,6 +88,17 @@ public class Contact {
         JSONObject res = json.getJSONArray("results").getJSONObject(0);
         JSONObject loc = res.getJSONObject("geometry").getJSONObject("location");
         return new double[] {loc.getDouble("lat"), loc.getDouble("lng")};
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((Contact) obj).getTimeToUser() == (this.getTimeToUser());
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Contact c = (Contact) o;
+        return (int) (this.getTimeToUser() - c.getTimeToUser());
     }
 
     public int getId() {
