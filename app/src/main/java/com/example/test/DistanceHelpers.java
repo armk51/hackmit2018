@@ -1,4 +1,4 @@
-import android.support.annotation.NonNull;
+package com.example.test;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,11 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.net.ssl.HttpsURLConnection;
 

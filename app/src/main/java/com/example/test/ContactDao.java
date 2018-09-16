@@ -1,3 +1,5 @@
+package com.example.test;
+
 import android.arch.persistence.room.*;
 
 import java.util.List;

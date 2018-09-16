@@ -1,3 +1,5 @@
+package com.example.test;
+
 import android.arch.persistence.room.*;
 
 @Database(entities = {Contact.class, Shelter.class}, version = 1)
