@@ -1,3 +1,7 @@
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -5,22 +9,34 @@ import javax.net.ssl.HttpsURLConnection;
 import java.net.URL;
 import org.json.*;
 
+@Entity
 public class Contact {
-    private String APIKey = "da328055e2e940d8b28055e2e9e0d851";
+    @PrimaryKey(autoGenerate = true)
+    private int id=0;
+
+    @Ignore
+    private String APIKey = "AIzaSyB6Wq1m5PB27emo2reEUzRuY4B0kdT-jFU"; //value does not change
+
     private String name;
     private String phn;
     private String address;
     private double x;
     private double y;
 
-    public Contact(String name, String phn, String address) throws IOException, JSONException {
+    public Contact(String name, String phn, String address) {
         this.name = name;
         this.phn = phn;
         this.address = address;
 
-        double[] coords = get_coords(address);
-        this.x = coords[0];
-        this.y = coords[1];
+        try {
+            double[] coords = get_coords(address);
+            this.x = coords[0];
+            this.y = coords[1];
+        }
+        catch (Exception e){
+            this.x = 0;
+            this.y = 0;
+        }
     }
 
     private double[] get_coords(String address) throws IOException, JSONException {
@@ -50,6 +66,14 @@ public class Contact {
         JSONObject loc =
                 res.getJSONObject("geometry").getJSONObject("location");
         return new double[] {loc.getDouble("lat"), loc.getDouble("lng")};
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

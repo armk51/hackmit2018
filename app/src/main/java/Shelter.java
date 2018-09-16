@@ -1,4 +1,11 @@
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity
 public class Shelter {
+    @PrimaryKey(autoGenerate = true)
+    private int id=0;
+
     private String name;
     private double x;
     private double y;
@@ -7,6 +14,14 @@ public class Shelter {
         this.name = name;
         this.x = x;
         this.y = y;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
