@@ -1,6 +1,15 @@
 package com.example.test;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.arch.persistence.room.Room;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -9,10 +18,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +58,28 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Contact> contacts) {
         }
+    }
+
+    private class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location loc) {
+            Toast.makeText(
+                    getBaseContext(),
+                    "Location changed: Lat: " + loc.getLatitude() + " Lng: "
+                            + loc.getLongitude(), Toast.LENGTH_SHORT).show();
+            String longitude = "Longitude: " + loc.getLongitude();
+            String latitude = "Latitude: " + loc.getLatitude();
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
 
     private static class SaveContactTask extends AsyncTask<Contact, Void, Contact> {
@@ -85,6 +128,58 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(new LoadContactsTask().execute());
 
+        String locationProvider = LocationManager.GPS_PROVIDER;
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        double x = 0;
+        double y = 0;
+
+        requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1337);
+        try {
+            locationManager.requestLocationUpdates(locationProvider, 0, 0, new MyLocationListener());
+
+            Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+            x=lastKnownLocation.getLatitude();
+            y=lastKnownLocation.getLongitude();
+        } catch (SecurityException e) {
+            System.out.println(e);
+        }
+
+        String alertDescription = "";
+        try {
+            URL url = new URL("https://api.weather.com/v3/alerts/headlines?geocode=" + x + "%2C" + y + "&format=json&language=en-US&apiKey=da328055e2e940d8b28055e2e9e0d851");
+            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+            if (con.getResponseCode() == 204) {
+                alertDescription = "No Alerts";
+            } else {
+                // read from the URL
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        con.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                JSONObject json = new JSONObject(response.toString());
+                alertDescription = json.getJSONArray("alerts").getJSONObject(0).getString("headlineText");
+            }
+        }
+        catch (Exception e){
+            alertDescription = e.toString();
+        }
+
+        LayoutInflater factory = getLayoutInflater();
+        View v = factory.inflate(R.layout.home_fragment, null);
+        TextView alert_message = (TextView) v.findViewById(R.id.alert_card_message);
+        alert_message.setText(alertDescription);
+
+        System.out.println(alertDescription);
 
         bottomNavigation = findViewById(R.id.navigationView);
 
